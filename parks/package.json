@@ -1,0 +1,23 @@
+{
+  "name": "parks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config -e env,js,mjs,graphql ./src/index.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.10.1",
+    "@apollo/subgraph": "^2.7.1",
+    "dotenv": "^16.4.5",
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
