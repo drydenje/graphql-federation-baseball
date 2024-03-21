@@ -1,0 +1,20 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@key"])
+
+"A park is the physical building a franchise plays it's games in."
+type Park @key(fields: "key") {
+  "The unique key of the park"
+  key: String
+  "The name of the park"
+  name: String
+  "The city where the park is located"
+  city: String
+  "The state (or province) where the park is located"
+  state: String
+  "The country where the park is located"
+  country: String
+}
+
+type Query {
+  viewer: Park
+}
