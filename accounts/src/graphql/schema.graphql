@@ -1,0 +1,11 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@key"])
+
+type Account @key(fields: "id") {
+  id: ID!
+  email: String!
+}
+
+type Query {
+  viewer: Account
+}
