@@ -33,6 +33,7 @@ const resolvers = {
     },
 
     async viewer(parent, args, { user }) {
+      console.log(user);
       if (user?.sub) {
         const viewer = await auth0.users.get({ id: user.sub });
 
