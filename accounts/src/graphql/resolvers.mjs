@@ -35,6 +35,18 @@ const resolvers = {
       return null;
     },
   },
+
+  Mutation: {
+    async createAccount(parent, { input: { email, password } }) {
+      const temp = await auth0.users.create({
+        connection: "Username-Password-Authentication",
+        email,
+        password,
+      });
+      console.log(temp);
+      return temp.data;
+    },
+  },
 };
 
 export default resolvers;
