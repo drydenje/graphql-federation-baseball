@@ -81,7 +81,9 @@ const resolvers = {
 
     async deleteAccount(root, { id }) {
       try {
+        // this isn't triggering an error when it doesn't delete
         const deleteUser = await auth0.users.delete({ id });
+        console.log(deleteUser);
 
         return true;
       } catch {
