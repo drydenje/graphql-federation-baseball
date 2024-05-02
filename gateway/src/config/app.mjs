@@ -19,7 +19,7 @@ const jwtCheck = jwt({
 
 app.use(jwtCheck, (err, req, res, next) => {
   if (err.code === "invalid_token") {
-    console.log("INVALID TOKEN: It might need to be re-issued");
+    // console.log("INVALID TOKEN: It might need to be re-issued");
     return next();
   }
   return next(err);

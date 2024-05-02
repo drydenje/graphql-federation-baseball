@@ -29,7 +29,29 @@ input CreateAccountInput {
   password: String!
 }
 
+input UpdateAccountEmailInput {
+  "The unique ID associated with the account."
+  id: ID!
+  "The updated account email."
+  email: String!
+}
+
+input UpdateAccountPasswordInput {
+  "The unique ID associated with the account."
+  id: ID!
+  "The updated account password."
+  newPassword: String!
+  "The existing account password."
+  password: String!
+}
+
 type Mutation {
   "Creates a new account."
   createAccount(input: CreateAccountInput!): Account!
+  "Updates an account's email."
+  updateAccountEmail(input: UpdateAccountEmailInput!): Account!
+  "Updates an account's password."
+  updateAccountPassword(input: UpdateAccountPasswordInput!): Account!
+  "Deletes an account."
+  deleteAccount(id: ID!): Boolean!
 }
