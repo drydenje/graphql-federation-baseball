@@ -1785,3 +1785,18 @@ const parks = [
     country: "US",
   },
 ];
+
+const resolvers = {
+  Park: {
+    __resolveReference(reference) {
+      return parks.find((park) => park.key === reference.key);
+    },
+  },
+  Query: {
+    viewer(parent, args, { user }) {
+      return parks[0];
+    },
+  },
+};
+
+export default resolvers;
