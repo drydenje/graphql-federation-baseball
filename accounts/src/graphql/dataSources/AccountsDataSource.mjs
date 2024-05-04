@@ -1,8 +1,8 @@
-import { RestDataSource } from "@apollo/datasource-rest";
+import { RESTDataSource } from "@apollo/datasource-rest";
 import { GraphQLError } from "graphql";
 import getToken from "../../utils/getToken.mjs";
 
-class AccountsDataSource extends RestDataSource {
+class AccountsDataSource extends RESTDataSource {
   // pass auth0 to the class
   constructor({ auth0 }) {
     super();
@@ -30,7 +30,7 @@ class AccountsDataSource extends RestDataSource {
     const user = await this.auth0.users.get({ id });
 
     try {
-      await getToken(user.email, password);
+      await getToken(user.data.email, password);
     } catch {
       throw new GraphQLError("Email or existing password is incorrect.", {
         extensions: {

@@ -1,11 +1,11 @@
-import auth0 from "../config/auth0.mjs";
-import getToken from "../utils/getToken.mjs";
-import { GraphQLError } from "graphql";
+// import auth0 from "../config/auth0.mjs";
+// import getToken from "../utils/getToken.mjs";
+// import { GraphQLError } from "graphql";
 
 const resolvers = {
   Account: {
-    __resolveReference(reference) {
-      return auth0.users.get({ id: reference.id });
+    __resolveReference(reference, { dataSources }) {
+      return dataSources.accountsAPI.getAccountById(reference.id);
     },
     id(account) {
       return account.user_id;
@@ -16,79 +16,49 @@ const resolvers = {
   },
 
   Query: {
-    async account(root, { id }) {
-      const account = await auth0.users.get({ id });
-
-      return account.data;
+    async account(root, { id }, { dataSources }) {
+      return dataSources.accountsAPI.getAccountById(id);
     },
 
-    async accounts(root, args) {
-      const accounts = await auth0.users.getAll();
-
-      return accounts.data;
+    async accounts(root, args, { dataSources }) {
+      return dataSources.accountsAPI.getAccounts();
     },
 
-    async viewer(parent, args, { user }) {
+    async viewer(parent, args, { dataSources, user }) {
       if (user?.sub) {
-        const viewer = await auth0.users.get({ id: user.sub });
-
-        return viewer.data;
+        return dataSources.accountsAPI.getAccountById(user.sub);
       }
       return null;
     },
   },
 
   Mutation: {
-    async createAccount(parent, { input: { email, password } }) {
-      const newUser = await auth0.users.create({
-        connection: "Username-Password-Authentication",
-        email,
-        password,
-      });
-
-      return newUser.data;
+    async createAccount(
+      parent,
+      { input: { email, password } },
+      { dataSources }
+    ) {
+      return dataSources.accountsAPI.createAccount(email, password);
     },
 
-    async updateAccountEmail(root, { input: { id, email } }) {
-      const updateEmail = await auth0.users.update({ id }, { email });
+    async deleteAccount(root, { id }, { dataSources }) {
+      return dataSources.accountsAPI.deleteAccount(id);
+    },
 
-      return updateEmail.data;
+    async updateAccountEmail(root, { input: { id, email } }, { dataSources }) {
+      return dataSources.accountsAPI.updateAccountEmail(id, email);
     },
 
     async updateAccountPassword(
       root,
-      { input: { id, newPassword, password } }
+      { input: { id, newPassword, password } },
+      { dataSources }
     ) {
-      const user = await auth0.users.get({ id });
-
-      try {
-        await getToken(user.data.email, password);
-      } catch {
-        throw new GraphQLError("Email or existing password is incorrect.", {
-          extensions: {
-            code: "USER_INPUT_ERROR ",
-          },
-        });
-      }
-
-      const updatePassword = await auth0.users.update(
-        { id },
-        { password: newPassword }
+      return dataSources.accountsAPI.updateAccountPassword(
+        id,
+        newPassword,
+        password
       );
-
-      return updatePassword.data;
-    },
-
-    async deleteAccount(root, { id }) {
-      try {
-        // this isn't triggering an error when it doesn't delete
-        const deleteUser = await auth0.users.delete({ id });
-        console.log(deleteUser);
-
-        return true;
-      } catch {
-        return false;
-      }
     },
   },
 };
