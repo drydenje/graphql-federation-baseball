@@ -1,4 +1,8 @@
+import { DateTimeType } from "../../../shared/src/index.mjs";
+
 const resolvers = {
+  DateTime: DateTimeType,
+
   Account: {
     __resolveReference(reference, { dataSources }) {
       return dataSources.accountsAPI.getAccountById(reference.id);
