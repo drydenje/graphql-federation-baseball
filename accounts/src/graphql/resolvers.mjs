@@ -1,7 +1,3 @@
-// import auth0 from "../config/auth0.mjs";
-// import getToken from "../utils/getToken.mjs";
-// import { GraphQLError } from "graphql";
-
 const resolvers = {
   Account: {
     __resolveReference(reference, { dataSources }) {
