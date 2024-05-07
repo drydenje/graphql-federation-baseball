@@ -1,10 +1,11 @@
-import { dirname } from "path";
+import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
 
-import { ApolloServerErrorCode } from "@apollo/server/errors";
+import { GraphQLError } from "graphql";
 import { defaultFieldResolver } from "graphql";
 import { getDirectives, MapperKind, mapSchema } from "@graphql-tools/utils";
+import { get } from "lodash-es";
 
 function authDirectives() {
   /* 
@@ -26,18 +27,40 @@ function authDirectives() {
         [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
           // Directive handling logic will go here...
           const fieldDirectives = getDirectives(schema, fieldConfig);
+
           const privateDirective = fieldDirectives.find(
             (dir) => dir.name === "private"
           );
 
-          const { resolve = defaultFieldResolver } = fieldConfig;
+          const ownerDirective = fieldDirectives.find(
+            (dir) => dir.name === "owner"
+          );
 
-          if (privateDirective) {
+          const { resolve = defaultFieldResolver } = fieldConfig;
+          // console.log(fieldConfig);
+
+          if (privateDirective || ownerDirective) {
             fieldConfig.resolve = function (source, args, context, info) {
               const privateAuthorized = privateDirective && context.user?.sub;
+              console.log("privateAuthorized", context);
+              const ownerArgAuthorized =
+                ownerDirective &&
+                context.user?.sub &&
+                get(args, ownerDirective.args.argumentName) ===
+                  context.user.sub;
 
-              if (!privateAuthorized) {
-                throw new ApolloServerErrorCode("Not authorized!");
+              if (
+                (privateDirective && !privateAuthorized) ||
+                (ownerDirective && !ownerArgAuthorized)
+              ) {
+                throw new GraphQLError(
+                  "You are not authorized to perform this action.",
+                  {
+                    extensions: {
+                      code: "FORBIDDEN",
+                    },
+                  }
+                );
               }
 
               return resolve(source, args, context, info);

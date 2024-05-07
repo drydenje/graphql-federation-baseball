@@ -6,19 +6,32 @@ import { ApolloServer } from "@apollo/server";
 import { gql } from "graphql-tag";
 import { buildSubgraphSchema } from "@apollo/subgraph";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import AccountsDataSource from "./graphql/dataSources/AccountsDataSource.mjs";
 import auth0 from "./config/auth0.mjs";
+
 import resolvers from "./graphql/resolvers.mjs";
+import AccountsDataSource from "./graphql/dataSources/AccountsDataSource.mjs";
+import { authDirectives } from "../../shared/src/index.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const port = process.env.PORT;
 
-const typeDefs = gql(
-  readFileSync(resolve(__dirname, "./graphql/schema.graphql"), "utf-8")
+const { authDirectivesTypeDefs, authDirectivesTransformer } = authDirectives();
+
+// const typeDefs = gql(
+//   readFileSync(resolve(__dirname, "./graphql/schema.graphql"), "utf-8")
+// );
+const subgraphTypeDefs = readFileSync(
+  resolve(__dirname, "./graphql/schema.graphql"),
+  "utf-8"
 );
 
+const typeDefs = gql(`${subgraphTypeDefs}\n${authDirectivesTypeDefs}`);
+let subgraphSchema = buildSubgraphSchema({ typeDefs, resolvers });
+subgraphSchema = authDirectivesTransformer(subgraphSchema);
+
 const server = new ApolloServer({
-  schema: buildSubgraphSchema({ typeDefs, resolvers }),
+  // schema: buildSubgraphSchema({ typeDefs, resolvers }),
+  schema: subgraphSchema,
 });
 
 const { url } = await startStandaloneServer(server, {

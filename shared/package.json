@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.10.4",
+    "@graphql-tools/utils": "^10.2.0",
     "graphql": "^16.8.1",
+    "lodash-es": "^4.17.21",
     "validator": "^13.11.0"
   }
 }
