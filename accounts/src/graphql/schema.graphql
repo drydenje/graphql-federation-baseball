@@ -17,7 +17,8 @@ type Account @key(fields: "id") {
 
 type Query {
   "Retrieves a single account by ID."
-  account(id: ID!): Account! @private
+  account(id: ID!): Account!
+  # @private
   "Retrieves a list of accounts."
   accounts: [Account] @private
   "Retrieves the account of the currently logged-in user."

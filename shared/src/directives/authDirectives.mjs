@@ -42,7 +42,9 @@ function authDirectives() {
           if (privateDirective || ownerDirective) {
             fieldConfig.resolve = function (source, args, context, info) {
               const privateAuthorized = privateDirective && context.user?.sub;
-              console.log("privateAuthorized", context);
+              console.log("source", source);
+              console.log("args", args);
+              console.log("context", context);
               const ownerArgAuthorized =
                 ownerDirective &&
                 context.user?.sub &&
