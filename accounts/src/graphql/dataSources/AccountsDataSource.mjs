@@ -50,7 +50,6 @@ class AccountsDataSource extends RESTDataSource {
   async deleteAccount(id) {
     try {
       const deleteUser = await this.auth0.users.delete({ id });
-      // console.log(deleteUser);
 
       return true;
     } catch {
