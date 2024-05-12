@@ -1,3 +1,4 @@
+import { GraphQLError } from "graphql";
 import { DateTimeType } from "../../../shared/src/index.mjs";
 
 const resolvers = {
@@ -5,7 +6,14 @@ const resolvers = {
 
   Account: {
     __resolveReference(reference, { dataSources }) {
-      return dataSources.accountsAPI.getAccountById(reference.id);
+      if (user?.sub) {
+        return dataSources.accountsAPI.getAccountById(reference.id);
+      }
+      throw new GraphQLError("You are not authorized to perform this action.", {
+        extensions: {
+          code: "FORBIDDEN",
+        },
+      });
     },
     id(account) {
       return account.user_id;

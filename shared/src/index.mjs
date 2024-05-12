@@ -1,3 +1,4 @@
+import authDirectives from "./directives/authDirectives.mjs";
 import DateTimeType from "./scalars/DateTimeType.mjs";
 
-export { DateTimeType };
+export { authDirectives, DateTimeType };

@@ -18,6 +18,7 @@ app.use(
   expressMiddleware(gateway, {
     context: async ({ req }) => {
       const user = req.auth || null;
+
       return { user };
     },
   })
