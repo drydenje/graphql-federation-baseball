@@ -50,10 +50,12 @@ input UpdateAccountPasswordInput {
 type Mutation {
   "Creates a new account."
   createAccount(input: CreateAccountInput!): Account!
+  "Deletes an account."
+  deleteAccount(id: ID!): Boolean! @owner(argumentName: "id")
   "Updates an account's email."
   updateAccountEmail(input: UpdateAccountEmailInput!): Account!
+    @owner(argumentName: "input.id")
   "Updates an account's password."
   updateAccountPassword(input: UpdateAccountPasswordInput!): Account!
-  "Deletes an account."
-  deleteAccount(id: ID!): Boolean!
+    @owner(argumentName: "input.id")
 }
