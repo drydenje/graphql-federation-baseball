@@ -9,7 +9,10 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 function initGateway(httpServer) {
   const gateway = new ApolloGateway({
     supergraphSdl: new IntrospectAndCompose({
-      subgraphs: [{ name: "accounts", url: process.env.ACCOUNTS_ENDPOINT }],
+      subgraphs: [
+        { name: "accounts", url: process.env.ACCOUNTS_ENDPOINT },
+        { name: "profiles", url: process.env.PROFILES_ENDPOINT },
+      ],
       pollIntervalInMs: 1000,
     }),
     buildService({ url }) {

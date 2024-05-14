@@ -1,11 +1,11 @@
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
-import { readFileSync } from "url";
+import { readFileSync } from "fs";
 
 import { ApolloServer } from "@apollo/server";
 import { gql } from "graphql-tag";
 import { buildSubgraphSchema } from "@apollo/subgraph";
-import { startStandaloneServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
 import { authDirectives } from "../../shared/src/index.mjs";
 import initMongoose from "./config/mongoose.mjs";
