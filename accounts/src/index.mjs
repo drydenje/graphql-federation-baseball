@@ -48,4 +48,7 @@ const { url } = await startStandaloneServer(server, {
   },
   listen: { port },
 });
+
+// console.log(server.internals.state.schemaManager);
+
 console.log(`Accounts service ready at ${url}`);

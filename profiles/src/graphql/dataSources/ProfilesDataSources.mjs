@@ -1,6 +1,5 @@
-// import { DataSource } from ""
 import { GraphQLError } from "graphql";
-
+import { MongoDataSource } from "apollo-datasource-mongodb";
 // need MongoDataSource from docs
 
 class ProfilesDataSource extends MongoDataSource {

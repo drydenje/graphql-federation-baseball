@@ -31,6 +31,8 @@ const server = new ApolloServer({
   schema: subgraphSchema,
 });
 
+// console.log(subgraphSchema);
+
 const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => {
     const user = req.headers.user ? JSON.parse(req.headers.user) : null;
@@ -44,6 +46,8 @@ const { url } = await startStandaloneServer(server, {
   },
   listen: { port },
 });
+
+// console.log(server.internals.state.schemaManager);
 
 initMongoose();
 
