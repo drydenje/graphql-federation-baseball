@@ -1,61 +1,62 @@
 extend schema
   @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key"])
 
-"""
-An ISO 8601-encoded UTC date string.
-"""
-scalar DateTime
+# """
+# An ISO 8601-encoded UTC date string.
+# """
+# scalar DateTime
 
-"""
-A profile contains metadata about a specific user.
-"""
-type Profile @key(fields: "id") {
-  "The unique ID of the user's profile."
-  id: ID!
-  "The date and time the profile was created."
-  createdAt: DateTime!
-  "The Auth0 account tied to this profile."
-  account: Account!
-  "The full name of the user."
-  fullName: String
-  "A tag-like list of topics of interest to the user."
-  interests: [String]
-  "The unique username of the user."
-  username: String!
-}
+# """
+# A profile contains metadata about a specific user.
+# """
+# type Profile @key(fields: "id") {
+#   "The unique ID of the user's profile."
+#   id: ID!
+#   "The date and time the profile was created."
+#   createdAt: DateTime!
+#   # "The Auth0 account tied to this profile."
+#   # account: Account!
+#   "The full name of the user."
+#   fullName: String
+#   "A tag-like list of topics of interest to the user."
+#   interests: [String]
+#   "The unique username of the user."
+#   username: String!
+# }
 
-"""
-An account is a unique Auth0 user.
-"""
-type Account @key(fields: "id") {
-  id: ID!
-  "Metadata about the user that owns the account."
-  profile: Profile
-}
+# """
+# An account is a unique Auth0 user.
+# """
+# type Account @key(fields: "id") {
+#   id: ID!
+#   "Metadata about the user that owns the account."
+#   profile: Profile
+# }
 
 type Query {
-  "Retrieves a single profile by username."
-  profile(username: String!): Profile! @private
-  "Retrieves a list of profiles."
-  profiles: [Profile] @private
+  # "Retrieves a single profile by username."
+  # profile(username: String!): Profile! @private
+  # "Retrieves a list of profiles."
+  # profiles: [Profile] @private
+  sayHey: String
 }
 
-"""
-Provides data to create a new user profile.
-"""
-input CreateProfileInput {
-  "The new user's unique Auth0 ID."
-  accountId: ID!
-  "The new user's full name"
-  fullName: String
-  "A tag-like list of topics of interest to the user."
-  interests: [String]
-  "The new user's username (must be unique)."
-  username: String!
-}
+# """
+# Provides data to create a new user profile.
+# """
+# input CreateProfileInput {
+#   "The new user's unique Auth0 ID."
+#   accountId: ID!
+#   "The new user's full name"
+#   fullName: String
+#   "A tag-like list of topics of interest to the user."
+#   interests: [String]
+#   "The new user's username (must be unique)."
+#   username: String!
+# }
 
-type Mutation {
-  "Creates a new profile tied to an Auth0 account."
-  createProfile(input: CreateProfileInput!): Profile!
-    @owner(argumentName: "input.accountId")
-}
+# type Mutation {
+#   "Creates a new profile tied to an Auth0 account."
+#   createProfile(input: CreateProfileInput!): Profile!
+#     @owner(argumentName: "input.accountId")
+# }

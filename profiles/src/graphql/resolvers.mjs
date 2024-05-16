@@ -5,51 +5,54 @@ const resolvers = {
   DateTime: DateTimeType,
 
   Query: {
-    async profile(root, { username }, { dataSources }) {
-      const profile = await dataSources.profilesAPI.getProfile({ username });
+    // async profile(root, { username }, { dataSources }) {
+    //   const profile = await dataSources.profilesAPI.getProfile({ username });
 
-      if (!profile) {
-        throw new GraphQLError("Profile not available", {
-          extensions: {
-            code: "PROFILE_NOT_AVAILABLE",
-          },
-        });
-      }
-      return profile;
-    },
-    profiles(root, args, { dataSources }) {
-      return dataSources.profilesAPI.getProfiles();
+    //   if (!profile) {
+    //     throw new GraphQLError("Profile not available", {
+    //       extensions: {
+    //         code: "PROFILE_NOT_AVAILABLE",
+    //       },
+    //     });
+    //   }
+    //   return profile;
+    // },
+    // profiles(root, args, { dataSources }) {
+    //   return dataSources.profilesAPI.getProfiles();
+    // },
+    sayHey: {
+      return: "Wasup?",
     },
   },
 
-  Account: {
-    profile(account, args, { dataSources }) {
-      return dataSources.profilesAPI.getProfile({
-        accountId: account.id,
-      });
-    },
-  },
+  // Account: {
+  //   profile(account, args, { dataSources }) {
+  //     return dataSources.profilesAPI.getProfile({
+  //       accountId: account.id,
+  //     });
+  //   },
+  // },
 
-  Profile: {
-    __resolveReference(reference, { dataSources, user }) {
-      if (user?.sub) {
-        return dataSources.profilesAPI.getProfileById(reference.id);
-      }
-      throw new GraphQLError("Not authorized", {
-        extensions: {
-          code: "FORBIDDEN",
-        },
-      });
-    },
+  // Profile: {
+  //   __resolveReference(reference, { dataSources, user }) {
+  //     if (user?.sub) {
+  //       return dataSources.profilesAPI.getProfileById(reference.id);
+  //     }
+  //     throw new GraphQLError("Not authorized", {
+  //       extensions: {
+  //         code: "FORBIDDEN",
+  //       },
+  //     });
+  //   },
 
-    account(profile) {
-      return { id: profile.accountId };
-    },
+  //   account(profile) {
+  //     return { id: profile.accountId };
+  //   },
 
-    id(profile) {
-      return profile._id;
-    },
-  },
+  //   id(profile) {
+  //     return profile._id;
+  //   },
+  // },
 };
 
 export default resolvers;

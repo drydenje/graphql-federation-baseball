@@ -15,6 +15,7 @@ import resolvers from "./graphql/resolvers.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const port = process.env.PORT;
+initMongoose();
 
 const { authDirectivesTypeDefs, authDirectivesTransformer } = authDirectives();
 
@@ -48,7 +49,6 @@ const { url } = await startStandaloneServer(server, {
 });
 
 // console.log(server.internals.state.schemaManager);
-
-initMongoose();
+// console.log(url);
 
 console.log(`Profiles service ready at ${url}`);

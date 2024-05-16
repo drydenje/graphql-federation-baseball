@@ -1,10 +1,11 @@
-import { GraphQLError } from "graphql";
 import { MongoDataSource } from "apollo-datasource-mongodb";
+import { GraphQLError } from "graphql";
 // need MongoDataSource from docs
 
-class ProfilesDataSource extends MongoDataSource {
+class ProfilesDataSource {
+  // extends MongoDataSource {
   constructor({ Profile }) {
-    super();
+    // super();
     this.Profile = Profile;
   }
 
@@ -16,7 +17,7 @@ class ProfilesDataSource extends MongoDataSource {
     return this.Profile.find({}).exec();
   }
 
-  getProfileById(id) {
+  async getProfileById(id) {
     return this.Profile.findById(id).exec();
   }
 }
