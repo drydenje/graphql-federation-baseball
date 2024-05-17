@@ -36,8 +36,11 @@ const server = new ApolloServer({
 
 const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => {
+    // console.log("REQ:", req.headers);
     const user = req.headers.user ? JSON.parse(req.headers.user) : null;
-
+    if (user) {
+      console.log("USR:", user);
+    }
     return {
       user,
       dataSources: {

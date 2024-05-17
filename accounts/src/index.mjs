@@ -17,10 +17,6 @@ const port = process.env.PORT;
 
 const { authDirectivesTypeDefs, authDirectivesTransformer } = authDirectives();
 
-// const typeDefs = gql(
-//   readFileSync(resolve(__dirname, "./graphql/schema.graphql"), "utf-8")
-// );
-
 const subgraphTypeDefs = readFileSync(
   resolve(__dirname, "./graphql/schema.graphql"),
   "utf-8"
@@ -31,14 +27,13 @@ let subgraphSchema = buildSubgraphSchema({ typeDefs, resolvers });
 subgraphSchema = authDirectivesTransformer(subgraphSchema);
 
 const server = new ApolloServer({
-  // schema: buildSubgraphSchema({ typeDefs, resolvers }),
   schema: subgraphSchema,
 });
 
 const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => {
     const user = req.headers.user ? JSON.parse(req.headers.user) : null;
-    // console.log("USER:", user);
+
     return {
       user,
       dataSources: {
@@ -48,7 +43,5 @@ const { url } = await startStandaloneServer(server, {
   },
   listen: { port },
 });
-
-// console.log(server.internals.state.schemaManager);
 
 console.log(`Accounts service ready at ${url}`);

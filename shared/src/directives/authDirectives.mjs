@@ -41,6 +41,7 @@ function authDirectives() {
           if (privateDirective || ownerDirective) {
             fieldConfig.resolve = function (source, args, context, info) {
               const privateAuthorized = privateDirective && context.user?.sub;
+              // console.log("Context user:", context.user);
 
               const ownerArgAuthorized =
                 ownerDirective &&
@@ -53,7 +54,7 @@ function authDirectives() {
                 (ownerDirective && !ownerArgAuthorized)
               ) {
                 throw new GraphQLError(
-                  "You are not authorized to perform this action.",
+                  "You are not authorized to perform this action",
                   {
                     extensions: {
                       code: "FORBIDDEN",

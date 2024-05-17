@@ -5,54 +5,58 @@ const resolvers = {
   DateTime: DateTimeType,
 
   Query: {
-    // async profile(root, { username }, { dataSources }) {
-    //   const profile = await dataSources.profilesAPI.getProfile({ username });
+    async profile(root, { username }, { dataSources }) {
+      const profile = await dataSources.profilesAPI.getProfile({ username });
 
-    //   if (!profile) {
-    //     throw new GraphQLError("Profile not available", {
-    //       extensions: {
-    //         code: "PROFILE_NOT_AVAILABLE",
-    //       },
-    //     });
-    //   }
-    //   return profile;
-    // },
-    // profiles(root, args, { dataSources }) {
-    //   return dataSources.profilesAPI.getProfiles();
-    // },
-    sayHey: {
-      return: "Wasup?",
+      if (!profile) {
+        throw new GraphQLError("Profile not available", {
+          extensions: {
+            code: "PROFILE_NOT_AVAILABLE",
+          },
+        });
+      }
+      return profile;
+    },
+    profiles(root, args, { dataSources }) {
+      return dataSources.profilesAPI.getProfiles();
     },
   },
 
-  // Account: {
-  //   profile(account, args, { dataSources }) {
-  //     return dataSources.profilesAPI.getProfile({
-  //       accountId: account.id,
-  //     });
-  //   },
-  // },
+  Mutation: {
+    createProfile(root, { input }, { dataSources }) {
+      return dataSources.profilesAPI.createProfile(input);
+    },
+  },
 
-  // Profile: {
-  //   __resolveReference(reference, { dataSources, user }) {
-  //     if (user?.sub) {
-  //       return dataSources.profilesAPI.getProfileById(reference.id);
-  //     }
-  //     throw new GraphQLError("Not authorized", {
-  //       extensions: {
-  //         code: "FORBIDDEN",
-  //       },
-  //     });
-  //   },
+  Account: {
+    profile(account, args, { dataSources }) {
+      return dataSources.profilesAPI.getProfile({
+        accountId: account.id,
+      });
+    },
+  },
 
-  //   account(profile) {
-  //     return { id: profile.accountId };
-  //   },
+  Profile: {
+    __resolveReference(reference, { dataSources, user }) {
+      console.log("RESOLVERS USER:", user);
+      if (user?.sub) {
+        return dataSources.profilesAPI.getProfileById(reference.id);
+      }
+      throw new GraphQLError("Not authorized", {
+        extensions: {
+          code: "FORBIDDEN",
+        },
+      });
+    },
 
-  //   id(profile) {
-  //     return profile._id;
-  //   },
-  // },
+    account(profile) {
+      return { id: profile.accountId };
+    },
+
+    id(profile) {
+      return profile._id;
+    },
+  },
 };
 
 export default resolvers;
