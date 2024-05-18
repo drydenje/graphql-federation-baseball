@@ -35,9 +35,9 @@ type Account @key(fields: "id") {
 
 type Query {
   "Retrieves a single profile by username."
-  profile(username: String!): Profile! #@private
+  profile(username: String!): Profile! @private
   "Retrieves a list of profiles."
-  profiles: [Profile] #@private
+  profiles: [Profile] @private
 }
 
 """
@@ -57,5 +57,5 @@ input CreateProfileInput {
 type Mutation {
   "Creates a new profile tied to an Auth0 account."
   createProfile(input: CreateProfileInput!): Profile!
-  # @owner(argumentName: "input.accountId")
+    @owner(argumentName: "input.accountId")
 }
